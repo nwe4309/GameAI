@@ -2,37 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Galaxy
 {
-
-    [SerializeField] private GameObject neutralNode;
-
-    // Start is called before the first frame update
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        SpawnNodes(-400, -400, 800, 800, 25, 150);
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        [SerializeField] private GameObject neutralNode;
 
-    private void SpawnNodes(int leftBounds, int bottomBounds, int width, int height, float minSpacing, float maxSpacing)
-    {
-        for(int row = leftBounds; row <= width/2; row += (int)Random.Range(minSpacing, maxSpacing))
+        // Start is called before the first frame update
+        void Start()
         {
-            for(int col = bottomBounds; col <= height/2; col += (int)Random.Range(minSpacing,maxSpacing))
-            {
-                if (row == leftBounds && col == bottomBounds)
-                    continue;
+            SpawnNodes(-400, -400, 800, 800, 25, 150);
+        }
 
-                Debug.Log("X: " + row + " Y: " + col);
-                GameObject newNode = GameObject.Instantiate(neutralNode);
-                newNode.transform.position = new Vector3(row, 0, col);
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        /// <summary>
+        /// Randomly spawn nodes around the map
+        /// </summary>
+        /// <param name="leftBounds">Left most bounds of the spawn area</param>
+        /// <param name="bottomBounds">Bottom most bounds of the spawn area</param>
+        /// <param name="width">How wide the spawn area is</param>
+        /// <param name="height">How tall the spawn area is</param>
+        /// <param name="minSpacing">The minimum spacing between nodes</param>
+        /// <param name="maxSpacing">The maximum spacing between nodes</param>
+        private void SpawnNodes(int leftBounds, int bottomBounds, int width, int height, float minSpacing, float maxSpacing)
+        {
+            for (int row = leftBounds; row <= width / 2; row += (int)Random.Range(minSpacing, maxSpacing))
+            {
+                for (int col = bottomBounds; col <= height / 2; col += (int)Random.Range(minSpacing, maxSpacing))
+                {
+                    if (row == leftBounds && col == bottomBounds)
+                        continue;
+
+                    GameObject newNode = GameObject.Instantiate(neutralNode);
+                    newNode.transform.position = new Vector3(row, 0, col);
+                }
             }
-            //Debug.Log("X: " + (leftBounds + row) + " Y: " + (bottomBounds + col));
         }
     }
 }

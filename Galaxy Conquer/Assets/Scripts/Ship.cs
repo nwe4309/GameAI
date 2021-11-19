@@ -8,6 +8,8 @@ namespace Galaxy
     {
         [SerializeField] public Enums.Team currentOwner;
         [SerializeField] private int health;
+        [SerializeField] private float speed;
+        [SerializeField] private float rotationSpeed;
 
         [SerializeField] private GameObject laserShot;
 
@@ -16,6 +18,10 @@ namespace Galaxy
         [SerializeField] public List<GameObject> nearbyNodes;
         private GameObject nodeDetector;
         private float startingRadius;
+
+        [SerializeField] private GameObject closestNode;
+
+        [SerializeField] private GameObject targetNode;
 
         [SerializeField] public Enums.ShipState currentState;
 
@@ -48,6 +54,10 @@ namespace Galaxy
             switch(currentState)
             {
                 case Enums.ShipState.Idle:
+
+                    targetNode = null;
+                    nearbyNodes.Clear();
+
                     // If not doing anything then start detecting the nearest nodes
                     currentState = Enums.ShipState.Detect;
                     break;
@@ -57,8 +67,24 @@ namespace Galaxy
                     {
                         DetectNodes();
                     }
+                    else
+                    {
+                        FindClosestNode(nearbyNodes);
+                        currentState = Enums.ShipState.Move;
+                    }
                     break;
                 case Enums.ShipState.Move:
+                    if (targetNode == null)
+                        DetermineTarget();
+
+                    if(Vector3.Distance(transform.position,targetNode.transform.position) >= 8)
+                    {
+                        Vector3 direction = targetNode.transform.position - transform.position;
+
+                        transform.position = Vector3.MoveTowards(transform.position, targetNode.transform.position, speed * Time.deltaTime);
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
+                    }
+
                     break;
                 case Enums.ShipState.Capture:
                     break;
@@ -83,6 +109,62 @@ namespace Galaxy
         private void DetectNodes()
         {
             nodeDetector.GetComponent<SphereCollider>().radius++;
+        }
+
+        private void FindClosestNode(List<GameObject> nodeList)
+        {
+            closestNode = nearbyNodes[0];
+            foreach (GameObject node in nodeList)
+            {
+                if(Vector3.Distance(transform.position,node.transform.position) <= Vector3.Distance(transform.position, closestNode.transform.position))
+                {
+                    closestNode = node;
+                }
+            }
+        }
+        private void DetermineTarget()
+        {
+            // Check if all the nodes are neutral with no capture progress
+            #region Neutral Nodes with no capture progress
+            int neutralNoProgCounter = 0;
+            foreach (GameObject node in nearbyNodes)
+            {
+                if (node.GetComponent<NodeTerritory>().currentOwner == Enums.Team.Neutral && node.GetComponent<NodeTerritory>().CaptureProgress == 0)
+                    neutralNoProgCounter++;
+            }
+            if(neutralNoProgCounter == nearbyNodes.Count)
+            {
+                targetNode = nearbyNodes[Random.Range(0, nearbyNodes.Count)];
+                return;
+            }
+            #endregion
+
+            // Check if any are neutral and pick the one with the most capture progress
+            #region Any neutral
+            List<GameObject> neutralNodes = new List<GameObject>();
+            foreach(GameObject node in nearbyNodes)
+            {
+                if(node.GetComponent<NodeTerritory>().currentOwner == Enums.Team.Neutral)
+                {
+                    neutralNodes.Add(node);
+                }
+            }
+            if (neutralNodes.Count > 0)
+            {
+                // Find the closest node that has the most current progress
+                GameObject closestNodeWithProg = neutralNodes[0];
+                foreach (GameObject node in neutralNodes)
+                {
+                    if (Vector3.Distance(transform.position, node.transform.position) <= Vector3.Distance(transform.position, closestNodeWithProg.transform.position) && node.GetComponent<NodeTerritory>().CaptureProgress >= closestNodeWithProg.GetComponent<NodeTerritory>().CaptureProgress)
+                    {
+                        closestNodeWithProg = node;
+                    }
+                }
+
+                targetNode = closestNodeWithProg;
+                return;
+            }
+            #endregion
         }
 
         private void OnTriggerEnter(Collider other)

@@ -12,6 +12,11 @@ namespace Galaxy
 
         [SerializeField] protected float captureThreshold;
 
+        public float CaptureProgress
+        {
+            get { return captureProgress; }
+        }
+
         public void IncreaseCaptureProgress(float amount, Enums.Team team)
         {
             captureProgress += amount * Time.deltaTime;

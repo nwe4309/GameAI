@@ -43,8 +43,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentOwner: 4
   health: 5
+  speed: 30
+  rotationSpeed: 100
   laserShot: {fileID: 5073869425760961259, guid: 7868d254ff973934c898b3bbdad188ee, type: 3}
   nearbyNodes: []
+  closestNode: {fileID: 0}
+  targetNode: {fileID: 0}
   currentState: 0
 --- !u!1001 &4383331710406617377
 PrefabInstance:

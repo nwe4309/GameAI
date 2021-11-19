@@ -40,7 +40,7 @@ namespace Galaxy
             // Spawn the new ship to the left of the base
             GameObject newShip = GameObject.Instantiate(ship);
             newShip.transform.position = new Vector3(transform.position.x - transform.localScale.x - newShip.transform.localScale.x, 0, transform.position.z);
-            newShip.GetComponent<Ship>().currentOwner = currentOwner;
+            newShip.GetComponent<Ship>().currentTeam = currentOwner;
             newShip.name = currentOwner.ToString() + " Team Ship";
         }
     }

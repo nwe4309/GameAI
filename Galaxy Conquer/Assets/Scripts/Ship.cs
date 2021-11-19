@@ -6,7 +6,7 @@ namespace Galaxy
 {
     public class Ship : MonoBehaviour
     {
-        [SerializeField] public Enums.Team currentOwner;
+        [SerializeField] public Enums.Team currentTeam;
         [SerializeField] private int health;
         [SerializeField] private float speed;
         [SerializeField] private float rotationSpeed;
@@ -17,7 +17,7 @@ namespace Galaxy
 
         [SerializeField] public List<GameObject> nearbyNodes;
         private GameObject nodeDetector;
-        private float startingRadius;
+        private float startingDetectorRadius;
 
         [SerializeField] private GameObject closestNode;
 
@@ -30,7 +30,7 @@ namespace Galaxy
         {
             currentState = Enums.ShipState.Idle;
             nodeDetector = transform.GetChild(1).gameObject;
-            startingRadius = nodeDetector.GetComponent<SphereCollider>().radius;
+            startingDetectorRadius = nodeDetector.GetComponent<SphereCollider>().radius;
         }
 
         // Update is called once per frame
@@ -55,6 +55,8 @@ namespace Galaxy
             {
                 case Enums.ShipState.Idle:
 
+                    if(targetNode != null)
+                        targetNode.GetComponent<NodeTerritory>().shipsNearby.Remove(gameObject);
                     targetNode = null;
                     nearbyNodes.Clear();
 
@@ -70,20 +72,59 @@ namespace Galaxy
                     else
                     {
                         FindClosestNode(nearbyNodes);
+                        // Reset the detect radius
+                        nodeDetector.GetComponent<SphereCollider>().radius = startingDetectorRadius;
                         currentState = Enums.ShipState.Move;
                     }
                     break;
                 case Enums.ShipState.Move:
                     if (targetNode == null)
-                        DetermineTarget();
-
-                    if(Vector3.Distance(transform.position,targetNode.transform.position) >= 8)
                     {
-                        SeekTarget(targetNode.transform);
+                        DetermineTarget();
+                        if(targetNode != null)
+                            nearbyNodes.Clear();
+                    }
+                    else
+                    {
+                        // If not close to the target node
+                        if(Vector3.Distance(transform.position,targetNode.transform.position) >= 10)
+                        {
+                            // Seek it
+                            SeekTarget(targetNode.transform);
+                        }
+                        else
+                        {
+                            // You've reached the target node
+                        
+                            // If the target node is already captured, go back to idle
+                            if(targetNode.GetComponent<NodeTerritory>().currentOwner == currentTeam)
+                            {
+                                currentState = Enums.ShipState.Idle;
+                            }
+                            else
+                            {
+                                // Otherwise capture it
+                                currentState = Enums.ShipState.Capture;
+                                targetNode.GetComponent<NodeTerritory>().shipsNearby.Add(gameObject);
+                            }
+                        }
                     }
 
                     break;
                 case Enums.ShipState.Capture:
+
+                    if (targetNode.GetComponent<NodeTerritory>().currentOwner == currentTeam)
+                    {
+                        currentState = Enums.ShipState.Idle;
+                    }
+                    else
+                    {
+                        if (targetNode.GetComponent<NodeTerritory>().canCapture == true)
+                        {
+                            targetNode.GetComponent<NodeTerritory>().IncreaseCaptureProgress(1, currentTeam);
+                        }
+                    }
+
                     break;
                 case Enums.ShipState.Fight:
                     break;
@@ -102,7 +143,7 @@ namespace Galaxy
         public void Shoot()
         {
             GameObject newShot = GameObject.Instantiate(laserShot,transform.position + transform.forward ,transform.rotation);
-            newShot.GetComponent<Laser>().currentOwner = currentOwner;
+            newShot.GetComponent<Laser>().currentOwner = currentTeam;
             newShot.transform.Rotate(new Vector3(90, 0, 0));
             //newShot.transform.position = transform.position;
             //newShot.transform.forward = transform.forward;
@@ -176,7 +217,7 @@ namespace Galaxy
         {
             if(other.CompareTag("Laser"))
             {
-                if (other.gameObject.GetComponent<Laser>().currentOwner != currentOwner)
+                if (other.gameObject.GetComponent<Laser>().currentOwner != currentTeam)
                 {
                     health -= other.gameObject.GetComponent<Laser>().damage;
                     Destroy(other.gameObject);
@@ -184,6 +225,10 @@ namespace Galaxy
                     // If the ship reaches zero health, destroy it
                     if(health <= 0)
                     {
+                        if(targetNode != null)
+                        {
+                            targetNode.GetComponent<NodeTerritory>().shipsNearby.Remove(gameObject);
+                        }
                         Destroy(gameObject);
                     }
                 }

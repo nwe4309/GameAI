@@ -20,10 +20,11 @@ namespace Galaxy
 
         private void OnTriggerEnter(Collider other)
         {
-            // If collding with a node
-            if (other.CompareTag("Node"))
+            // If colliding with a node
+            // Also only add new nodes to the list if the ship is in the detect state
+            if (other.CompareTag("Node") && transform.parent.gameObject.GetComponent<Ship>().currentState == Enums.ShipState.Detect)
             {
-                gameObject.transform.parent.gameObject.GetComponent<Ship>().nearbyNodes.Add(other.gameObject);
+                transform.parent.gameObject.GetComponent<Ship>().nearbyNodes.Add(other.gameObject);
             }
         }
     }

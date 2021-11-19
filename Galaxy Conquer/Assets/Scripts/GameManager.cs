@@ -9,6 +9,13 @@ namespace Galaxy
 
         [SerializeField] private GameObject neutralNode;
 
+        public Material redTeam;
+        public Material blueTeam;
+        public Material orangeTeam;
+        public Material greenTeam;
+        public Material neutral;
+        
+
         // Start is called before the first frame update
         void Start()
         {

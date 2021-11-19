@@ -79,10 +79,7 @@ namespace Galaxy
 
                     if(Vector3.Distance(transform.position,targetNode.transform.position) >= 8)
                     {
-                        Vector3 direction = targetNode.transform.position - transform.position;
-
-                        transform.position = Vector3.MoveTowards(transform.position, targetNode.transform.position, speed * Time.deltaTime);
-                        transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
+                        SeekTarget(targetNode.transform);
                     }
 
                     break;
@@ -92,6 +89,14 @@ namespace Galaxy
                     break;
 
             }
+        }
+
+        private void SeekTarget(Transform target)
+        {
+            Vector3 direction = target.position - transform.position;
+
+            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
         }
 
         public void Shoot()

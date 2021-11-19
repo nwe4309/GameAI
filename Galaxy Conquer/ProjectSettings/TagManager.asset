@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Laser
+  - Ship
+  - Node
   layers:
   - Default
   - TransparentFX

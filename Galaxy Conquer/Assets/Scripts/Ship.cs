@@ -13,23 +13,58 @@ namespace Galaxy
 
         private float timer;
 
+        [SerializeField] public List<GameObject> nearbyNodes;
+        private GameObject nodeDetector;
+        private float startingRadius;
+
+        [SerializeField] public Enums.ShipState currentState;
+
         // Start is called before the first frame update
         void Start()
         {
-
+            currentState = Enums.ShipState.Idle;
+            nodeDetector = transform.GetChild(1).gameObject;
+            startingRadius = nodeDetector.GetComponent<SphereCollider>().radius;
         }
 
         // Update is called once per frame
         void Update()
         {
-            transform.Translate(0, 0, 50 * Time.deltaTime);
+            //transform.Translate(0, 0, 50 * Time.deltaTime);
 
             timer += Time.deltaTime;
 
             if(timer >= 2)
             {
-                Shoot();
+                //Shoot();
                 timer = 0;
+            }
+
+            HandleStates();
+        }
+
+        private void HandleStates()
+        {
+            switch(currentState)
+            {
+                case Enums.ShipState.Idle:
+                    // If not doing anything then start detecting the nearest nodes
+                    currentState = Enums.ShipState.Detect;
+                    break;
+                case Enums.ShipState.Detect:
+                    // Increase search radius until at least 3 nodes are detected within range of the ship
+                    if (nearbyNodes.Count < 3)
+                    {
+                        DetectNodes();
+                    }
+                    break;
+                case Enums.ShipState.Move:
+                    break;
+                case Enums.ShipState.Capture:
+                    break;
+                case Enums.ShipState.Fight:
+                    break;
+
             }
         }
 
@@ -45,13 +80,17 @@ namespace Galaxy
 
         }
 
+        private void DetectNodes()
+        {
+            nodeDetector.GetComponent<SphereCollider>().radius++;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if(other.CompareTag("Laser"))
             {
                 if (other.gameObject.GetComponent<Laser>().currentOwner != currentOwner)
                 {
-                    Debug.Log("HIT " + name);
                     health -= other.gameObject.GetComponent<Laser>().damage;
                     Destroy(other.gameObject);
 

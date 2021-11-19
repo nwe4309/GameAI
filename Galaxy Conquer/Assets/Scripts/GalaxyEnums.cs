@@ -12,4 +12,13 @@ namespace Galaxy.Enums
         Orange,
         Green
     }
+
+    public enum ShipState
+    {
+        Idle,
+        Detect,
+        Move,
+        Capture,
+        Fight
+    }
 }

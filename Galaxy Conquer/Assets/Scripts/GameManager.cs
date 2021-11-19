@@ -12,7 +12,7 @@ namespace Galaxy
         // Start is called before the first frame update
         void Start()
         {
-            SpawnNodes(-400, -400, 800, 800, 25, 150);
+            SpawnNodes(-400, -400, 800, 800, 50, 150);
         }
 
         // Update is called once per frame

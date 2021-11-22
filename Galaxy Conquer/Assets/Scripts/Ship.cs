@@ -18,7 +18,7 @@ namespace Galaxy
 
         [SerializeField] private GameObject laserShot;
 
-        private float timer;
+        private float shootTimer;
 
         [SerializeField] public List<GameObject> nearbyNodes;
         private GameObject nodeDetector;
@@ -27,6 +27,7 @@ namespace Galaxy
         [SerializeField] private GameObject closestNode;
 
         [SerializeField] private GameObject targetNode;
+        [SerializeField] private GameObject previousTargetNode;
 
         [SerializeField] public Enums.ShipState currentState;
 
@@ -45,15 +46,13 @@ namespace Galaxy
             navMeshAgent.baseOffset = 0;
 
             chosenShootSpeed = Random.Range(minShootSpeed, maxShootSpeed);
+            // Idk where to put this
+            previousTargetNode = targetNode;
         }
 
         // Update is called once per frame
         void Update()
         {
-            //transform.Translate(0, 0, 50 * Time.deltaTime);
-
-            timer += Time.deltaTime;
-
             HandleStates();
         }
 
@@ -89,7 +88,7 @@ namespace Galaxy
                     if (targetNode == null)
                     {
                         DetermineTarget();
-                        if(targetNode != null)
+                        if (targetNode != null)
                             nearbyNodes.Clear();
                     }
                     else
@@ -107,8 +106,8 @@ namespace Galaxy
                         {
                             // You've reached the target node
                         
-                            // If the target node is already captured, go back to idle
-                            if(targetNode.GetComponent<NodeTerritory>().currentOwner == currentTeam)
+                            // If the target node is already captured and not being captured by the enemy team, go back to idle
+                            if(targetNode.GetComponent<NodeTerritory>().currentOwner == currentTeam && targetNode.GetComponent<NodeTerritory>().CaptureProgress == 0)
                             {
                                 currentState = Enums.ShipState.Idle;
                             }
@@ -124,7 +123,7 @@ namespace Galaxy
                     break;
                 case Enums.ShipState.Capture:
 
-                    if (targetNode.GetComponent<NodeTerritory>().currentOwner == currentTeam)
+                    if (targetNode.GetComponent<NodeTerritory>().currentOwner == currentTeam && targetNode.GetComponent<NodeTerritory>().CaptureProgress == 0)
                     {
                         currentState = Enums.ShipState.Idle;
                     }
@@ -148,13 +147,15 @@ namespace Galaxy
                     // Play with turn speed for fights
                     SeekTarget(targetShip.transform);
 
-                    if (timer >= chosenShootSpeed)
+                    if (shootTimer >= chosenShootSpeed)
                     {
                         Shoot();
-                        timer = 0;
+                        shootTimer = 0;
                         // Reassign shoot speed
                         chosenShootSpeed = Random.Range(minShootSpeed, maxShootSpeed);
                     }
+
+                    shootTimer += Time.deltaTime;
                     break;
 
             }
@@ -173,8 +174,6 @@ namespace Galaxy
         private void LookAtTarget(Transform target)
         {
             Vector3 direction = target.position - transform.position;
-            //
-            //transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
         }
 
@@ -183,11 +182,6 @@ namespace Galaxy
             GameObject newShot = GameObject.Instantiate(laserShot,transform.position + transform.forward ,transform.rotation);
             newShot.GetComponent<Laser>().currentOwner = currentTeam;
             newShot.transform.Rotate(new Vector3(90, 0, 0));
-            //newShot.transform.position = transform.position;
-            //newShot.transform.forward = transform.forward;
-            //newShot.transform.TransformDirection(Vector3(0,0));
-            //newShot.transform.rotation = transform.rotation;
-
         }
 
         private void DetectNodes()
@@ -251,6 +245,36 @@ namespace Galaxy
             }
             #endregion
 
+            // Check if any have capture progress
+            #region Any with capture progress
+            List<GameObject> nodesWithCaptureProgress = new List<GameObject>();
+            foreach (GameObject node in nearbyNodes)
+            {
+                // If any are currently being captured
+                if (node.GetComponent<NodeTerritory>().CaptureProgress != 0)
+                {
+                    nodesWithCaptureProgress.Add(node);
+                }
+                    
+            }
+            // If any
+            if (nodesWithCaptureProgress.Count > 0)
+            {
+                // Find the closest node
+                GameObject closestCaptureProgressNode = nodesWithCaptureProgress[0];
+                foreach (GameObject node in nodesWithCaptureProgress)
+                {
+                    if (Vector3.Distance(transform.position, node.transform.position) <= Vector3.Distance(transform.position, closestCaptureProgressNode.transform.position))
+                    {
+                        closestCaptureProgressNode = node;
+                    }
+                }
+
+                targetNode = closestCaptureProgressNode;
+                return;
+            }
+            #endregion
+
             // Check if all the nodes are on the same team as this ship
             #region All on current team
             int currentTeamCounter = 0;
@@ -262,10 +286,103 @@ namespace Galaxy
             // If all on the same team, pick a random node
             if(currentTeamCounter == nearbyNodes.Count)
             {
-                targetNode = nearbyNodes[Random.Range(0, nearbyNodes.Count)];
+                GameObject tempNode = nearbyNodes[Random.Range(0, nearbyNodes.Count)];
+                if (tempNode != previousTargetNode)
+                {
+                    targetNode = tempNode;
+                }
                 return;
             }
             #endregion
+
+            // Check if all of them are on an enemy team
+            #region All on enemy team
+            int enemyTeamCounter = 0;
+            GameObject closestEnemyNode = null;
+            foreach (GameObject node in nearbyNodes)
+            {
+                // If the node is of an enemy team
+                if (node.GetComponent<NodeTerritory>().currentOwner != currentTeam)
+                {
+                    // Incement the counter
+                    enemyTeamCounter++;
+
+                    // Keep track of the closest enemy node
+                    if(closestEnemyNode == null || Vector3.Distance(transform.position,node.transform.position) < Vector3.Distance(transform.position, closestEnemyNode.transform.position))
+                    {
+                        closestEnemyNode = node;
+                    }
+                }
+            }
+            // If all on the enemy team, pick the closest node
+            if (enemyTeamCounter == nearbyNodes.Count)
+            {
+                targetNode = closestEnemyNode;
+                return;
+            }
+            #endregion
+
+            // Check if any are on the enemy team
+            #region Any on enemy team
+            // Find all on the enemy team
+            List<GameObject> enemyTeam = new List<GameObject>();
+            foreach (GameObject node in nearbyNodes)
+            {
+                if (node.GetComponent<NodeTerritory>().currentOwner != currentTeam)
+                {
+                    enemyTeam.Add(node);
+                }
+            }
+            // If any
+            if (enemyTeam.Count > 0)
+            {
+                // Find the closest node
+                GameObject closestEnemyTeamNode = enemyTeam[0];
+                foreach (GameObject node in enemyTeam)
+                {
+                    if (Vector3.Distance(transform.position, node.transform.position) <= Vector3.Distance(transform.position, closestEnemyTeamNode.transform.position))
+                    {
+                        closestEnemyTeamNode = node;
+                    }
+                }
+
+                targetNode = closestEnemyTeamNode;
+                return;
+            }
+            #endregion
+
+            // Check if any of them are on your team
+            #region Any on your team
+            // Find all on the same team
+            List<GameObject> sameTeam = new List<GameObject>();
+            foreach (GameObject node in nearbyNodes)
+            {
+                if (node.GetComponent<NodeTerritory>().currentOwner == currentTeam)
+                {
+                    sameTeam.Add(node);
+                }
+            }
+            // If any
+            if (sameTeam.Count > 0)
+            {
+                // Find the closest node
+                GameObject closestSameTeamNode = sameTeam[0];
+                foreach (GameObject node in sameTeam)
+                {
+                    if (Vector3.Distance(transform.position, node.transform.position) <= Vector3.Distance(transform.position, closestSameTeamNode.transform.position))
+                    {
+                        closestSameTeamNode = node;
+                    }
+                }
+
+                targetNode = closestSameTeamNode;
+                Debug.Log("Any on same");
+                return;
+            }
+            #endregion
+
+
+            Debug.Log("No path found :(((");
         }
 
         private void OnTriggerEnter(Collider other)

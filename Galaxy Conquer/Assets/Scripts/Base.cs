@@ -58,9 +58,8 @@ namespace Galaxy
             timer = 0;
             currentSpawnTime = Random.Range(minSpawnTime, maxSpawnTime);
 
-            // Spawn the new ship to the left of the base
-            GameObject newShip = GameObject.Instantiate(shipToSpawn);
-            newShip.transform.position = new Vector3(transform.position.x - transform.localScale.x - newShip.transform.localScale.x, 0, transform.position.z);
+            // Spawn the new ship in front of the base
+            GameObject newShip = GameObject.Instantiate(shipToSpawn,transform.position + (transform.forward*transform.localScale.x), transform.rotation);
             newShip.GetComponent<Ship>().currentTeam = currentOwner;
             newShip.name = currentOwner.ToString() + " Team Ship";
         }

@@ -15,6 +15,8 @@ namespace Galaxy
         public Material greenTeam;
         public Material neutral;
 
+        public List<GameObject> nodesOnField;
+
 
         // Start is called before the first frame update
         void Start()
@@ -25,7 +27,23 @@ namespace Galaxy
         // Update is called once per frame
         void Update()
         {
+            // Populate UI with how many nodes belong to each team
 
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                Time.timeScale = 10.0f;
+                Debug.Log("1x Speed");
+            }
+            else if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                Time.timeScale = 2.0f;
+                Debug.Log("2x Speed");
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Time.timeScale = 4.0f;
+                Debug.Log("4x Speed");
+            }
         }
 
         /// <summary>

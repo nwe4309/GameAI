@@ -6,7 +6,7 @@ namespace Galaxy
 {
     public class NodeTerritory : MonoBehaviour
     {
-        private GameManager gameManager;
+        protected GameManager gameManager;
         [SerializeField] public Enums.Team currentOwner;
         [SerializeField] protected float captureProgress;
 
@@ -54,14 +54,14 @@ namespace Galaxy
         }
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
             gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
             canCapture = true;
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
             if (shipsNearby.Count > 0)
             {
@@ -88,13 +88,5 @@ namespace Galaxy
                 }
             }
         }
-
-        //private void OnTriggerStay(Collider other)
-        //{
-        //    if(other.CompareTag("Ship"))
-        //    {
-        //        //shipsNearby.Add(other.gameObject);
-        //    }
-        //}
     }
 }

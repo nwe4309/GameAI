@@ -6,7 +6,10 @@ namespace Galaxy
 {
     public class Base : NodeTerritory
     {
-        [SerializeField] private GameObject ship;
+        [SerializeField] private GameObject redShip;
+        [SerializeField] private GameObject blueShip;
+        [SerializeField] private GameObject orangeShip;
+        [SerializeField] private GameObject greenShip;
 
         [SerializeField] private float minSpawnTime, maxSpawnTime;
 
@@ -14,23 +17,42 @@ namespace Galaxy
         private float timer;
 
         // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             currentSpawnTime = Random.Range(minSpawnTime, maxSpawnTime);
         }
 
         // Update is called once per frame
-        void Update()
+        protected override void Update()
         {
+            base.Update();
+
             timer += Time.deltaTime;
 
             if(timer >= currentSpawnTime)
             {
-                SpawnUnit();
+                // Spawn the ship of whatever currently owns it
+                switch (currentOwner)
+                {
+                    case Enums.Team.Red:
+                        SpawnUnit(redShip);
+                        break;
+                    case Enums.Team.Blue:
+                        SpawnUnit(blueShip);
+                        break;
+                    case Enums.Team.Orange:
+                        SpawnUnit(orangeShip);
+                        break;
+                    case Enums.Team.Green:
+                        SpawnUnit(greenShip);
+                        break;
+
+                }
             }
         }
 
-        public void SpawnUnit()
+        public void SpawnUnit(GameObject shipToSpawn)
         {
             // Reset spawn timer and re-randomize spawn time
             // Done here so if you spawn a unit outside of the timer, it doesn't spawn another one really quickly
@@ -38,7 +60,7 @@ namespace Galaxy
             currentSpawnTime = Random.Range(minSpawnTime, maxSpawnTime);
 
             // Spawn the new ship to the left of the base
-            GameObject newShip = GameObject.Instantiate(ship);
+            GameObject newShip = GameObject.Instantiate(shipToSpawn);
             newShip.transform.position = new Vector3(transform.position.x - transform.localScale.x - newShip.transform.localScale.x, 0, transform.position.z);
             newShip.GetComponent<Ship>().currentTeam = currentOwner;
             newShip.name = currentOwner.ToString() + " Team Ship";

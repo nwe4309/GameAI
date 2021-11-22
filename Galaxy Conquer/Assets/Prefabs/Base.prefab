@@ -112,7 +112,12 @@ MonoBehaviour:
   currentOwner: 0
   captureProgress: 0
   captureThreshold: 200
-  ship: {fileID: 0}
+  shipsNearby: []
+  canCapture: 1
+  redShip: {fileID: 5337061383854961780, guid: c2a6e3372bff35844ad2dd5d1af4834c, type: 3}
+  blueShip: {fileID: 2491609752578960085, guid: 9c6b25f330bdfb147b820a0ba017d320, type: 3}
+  orangeShip: {fileID: 1023662066566802286, guid: cd56e6106c2296b4ebe90ef199c33eca, type: 3}
+  greenShip: {fileID: 5728864815366248051, guid: 63f951a089f81924da5b0ea9f3a112b7, type: 3}
   minSpawnTime: 4
   maxSpawnTime: 6
   currentSpawnTime: 0

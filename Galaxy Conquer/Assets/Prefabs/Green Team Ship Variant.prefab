@@ -66,7 +66,7 @@ NavMeshAgent:
   m_AngularSpeed: 100
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 5.873316
   m_BaseOffset: 2.936658

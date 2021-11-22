@@ -92,10 +92,11 @@ namespace Galaxy
                     }
                     else
                     {
-                        Vector2 targetNodePostion = new Vector2(targetNode.transform.position.x - targetNode.transform.localScale.x/2, targetNode.transform.position.z - targetNode.transform.localScale.z/2);
-                        targetNode.GetComponent<Renderer>().bounds.ClosestPoint(transform.position);
+                        //Vector2 targetNodePostion = new Vector2(targetNode.transform.position.x - targetNode.transform.localScale.x/2, targetNode.transform.position.z - targetNode.transform.localScale.z/2);
+                        //targetNode.GetComponent<Renderer>().bounds.ClosestPoint(transform.position);
                         // If not close to the target node
-                        if (Vector3.Distance(transform.position, targetNode.GetComponent<Renderer>().bounds.ClosestPoint(transform.position)) >= 30)
+                        // Also try to account for size of target
+                        if (Vector3.Distance(transform.position, targetNode.transform.position) - targetNode.GetComponent<Renderer>().bounds.size.x/2 >= 30)
                         {
                             // Seek it
                             SeekTarget(targetNode.transform);
@@ -127,8 +128,10 @@ namespace Galaxy
                     }
                     else
                     {
+                        Debug.Log("not same team " + targetNode.name);
                         if (targetNode.GetComponent<NodeTerritory>().canCapture == true)
                         {
+                            Debug.Log("capture? " + targetNode.name);
                             targetNode.GetComponent<NodeTerritory>().IncreaseCaptureProgress(1, currentTeam);
                         }
                     }

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ReadmeStarSparrow" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAQAAAAAAAAAAAAAAAAAAAQAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Pre-made\StarSparrow\Readme\Readme Files\Scripts\ReadmeStarSparrow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CannonBehavior" Collapsed="true">
+    <Position X="12.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAQCAAAAAAAAAAAAAAQAAAAAAAAACAAAAAEAA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\BuiltInRenderPipeline\ExampleScenes\ExampleScripts\CannonBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CreateSinShapedLineStrip" Collapsed="true">
+    <Position X="14.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAGAACAAAAAAAAAAAAAAAAAAAAAQAAAAAQgAAAA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\BuiltInRenderPipeline\ExampleScenes\ExampleScripts\CreateSinShapedLineStrip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShotBehavior" Collapsed="true">
+    <Position X="14.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\BuiltInRenderPipeline\ExampleScenes\ExampleScripts\ShotBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VolumetricLines.VolumetricMultiLineBehavior" Collapsed="true">
+    <Position X="12.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQANAAAEgCAAQAAAAAkCAAAgAEAAEAACAQAAAEgQIAA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\BuiltInRenderPipeline\ExampleScenes\ExampleScripts\VolumetricMultiLineBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VolumetricLines.VolumetricLineBehavior" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AWUNBgABgCAASAAAAAkAEAAgAEAAEAAAAQAABEBAYgA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\Scripts\VolumetricLineBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VolumetricLines.VolumetricLineStripBehavior" Collapsed="true">
+    <Position X="12.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASUNBAABgCAASAAAAAkAAAAgAEAAEAAAAQAABEhQIgA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\Scripts\VolumetricLineStripBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VolumetricLines.VolumetricLineVertexData" Collapsed="true">
+    <Position X="16" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAIAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Pre-made\VolumetricLines\Scripts\VolumetricLineVertexData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Galaxy.Base">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAARAAAAgAEAAAAAAgAAAAAAIAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Galaxy.Detector">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Detector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Galaxy.GameManager">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQABAAAACDAAAAAAAAAAQAgCAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Galaxy.Laser">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAwAAAAAAAAAAAAAAAAYAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Laser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Galaxy.NodeTerritory">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkQAAAAAADAAABAAQAAAAEAAAAAAAIAAAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\NodeTerritory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Galaxy.Ship">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAAKAABAAgIAAAQUAAAAAIBQAAQABDAAAAAAw=</HashCode>
+      <FileName>Assets\Scripts\Ship.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Galaxy.Enums.Team">
+    <Position X="4.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAhAAAAAAAAAAAAAAIAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GalaxyEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Galaxy.Enums.ShipState">
+    <Position X="2.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAIAIIAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GalaxyEnums.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -28,6 +28,8 @@ namespace Galaxy
 
         private NavMeshAgent navMeshAgent;
 
+        [SerializeField] public GameObject targetShip;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -45,12 +47,6 @@ namespace Galaxy
             //transform.Translate(0, 0, 50 * Time.deltaTime);
 
             timer += Time.deltaTime;
-
-            if(timer >= 2)
-            {
-                //Shoot();
-                timer = 0;
-            }
 
             HandleStates();
         }
@@ -128,16 +124,28 @@ namespace Galaxy
                     }
                     else
                     {
-                        Debug.Log("not same team " + targetNode.name);
                         if (targetNode.GetComponent<NodeTerritory>().canCapture == true)
                         {
-                            Debug.Log("capture? " + targetNode.name);
                             targetNode.GetComponent<NodeTerritory>().IncreaseCaptureProgress(1, currentTeam);
                         }
                     }
 
                     break;
                 case Enums.ShipState.Fight:
+
+                    if(targetShip == null)
+                    {
+                        currentState = Enums.ShipState.Idle;
+                        break;
+                    }
+
+                    LookAtTarget(targetShip.transform);
+
+                    if (timer >= 2)
+                    {
+                        Shoot();
+                        timer = 0;
+                    }
                     break;
 
             }
@@ -151,6 +159,14 @@ namespace Galaxy
             //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
 
             navMeshAgent.destination = target.position;
+        }
+
+        private void LookAtTarget(Transform target)
+        {
+            Vector3 direction = target.position - transform.position;
+            //
+            //transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
         }
 
         public void Shoot()

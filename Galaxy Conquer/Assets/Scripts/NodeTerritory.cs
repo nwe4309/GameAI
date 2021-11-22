@@ -74,6 +74,10 @@ namespace Galaxy
                     if(shipsNearby[i].GetComponent<Ship>().currentTeam != capturingTeam)
                     {
                         canCapture = false;
+
+                        // Send the gamemanager an update list of nearby ships and break out of the loop
+                        gameManager.HandleCombat(shipsNearby);
+                        break;
                     }
                     else
                     {

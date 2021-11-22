@@ -47,7 +47,6 @@ namespace Galaxy
                     case Enums.Team.Green:
                         SpawnUnit(greenShip);
                         break;
-
                 }
             }
         }

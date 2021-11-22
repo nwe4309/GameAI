@@ -15,21 +15,11 @@ namespace Galaxy
         public Material greenTeam;
         public Material neutral;
 
-        private List<GameObject> redTeamShips;
-        private List<GameObject> blueTeamShips;
-        private List<GameObject> orangeTeamShips;
-        private List<GameObject> greenTeamShips;
 
         // Start is called before the first frame update
         void Start()
         {
-            redTeamShips = new List<GameObject>();
-            blueTeamShips = new List<GameObject>();
-            orangeTeamShips = new List<GameObject>();
-            greenTeamShips = new List<GameObject>();
-
             //SpawnNodes(-400, -400, 800, 800, 50, 150);
-
         }
 
         // Update is called once per frame
@@ -69,22 +59,6 @@ namespace Galaxy
             {
                 Ship currentShip = ship.GetComponent<Ship>();
                 currentShip.currentState = Enums.ShipState.Fight;
-
-                //switch (currentShip.currentTeam)
-                //{
-                //    case Enums.Team.Red:
-                //        redTeamShips.Add(ship);
-                //        break;
-                //    case Enums.Team.Blue:
-                //        blueTeamShips.Add(ship);
-                //        break;
-                //    case Enums.Team.Orange:
-                //        orangeTeamShips.Add(ship);
-                //        break;
-                //    case Enums.Team.Green:
-                //        greenTeamShips.Add(ship);
-                //        break;
-                //}
             }
 
             // Tell each ship who to fight (the closest enemy)

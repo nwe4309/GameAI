@@ -66,12 +66,16 @@ MonoBehaviour:
   currentTeam: 0
   health: 5
   speed: 30
-  rotationSpeed: 100
+  rotationSpeed: 200
+  minShootSpeed: 1
+  maxShootSpeed: 4
+  chosenShootSpeed: 0
   laserShot: {fileID: 5073869425760961259, guid: 7868d254ff973934c898b3bbdad188ee, type: 3}
   nearbyNodes: []
   closestNode: {fileID: 0}
   targetNode: {fileID: 0}
   currentState: 0
+  targetShip: {fileID: 0}
 --- !u!1001 &1023135939716463706
 PrefabInstance:
   m_ObjectHideFlags: 0

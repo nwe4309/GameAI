@@ -11,6 +11,10 @@ namespace Galaxy
         [SerializeField] private int health;
         [SerializeField] private float speed;
         [SerializeField] private float rotationSpeed;
+        [SerializeField] private float minShootSpeed;
+        [SerializeField] private float maxShootSpeed;
+
+        [SerializeField] private float chosenShootSpeed;
 
         [SerializeField] private GameObject laserShot;
 
@@ -39,6 +43,8 @@ namespace Galaxy
 
             navMeshAgent = GetComponent<NavMeshAgent>();
             navMeshAgent.baseOffset = 0;
+
+            chosenShootSpeed = Random.Range(minShootSpeed, maxShootSpeed);
         }
 
         // Update is called once per frame
@@ -139,12 +145,15 @@ namespace Galaxy
                         break;
                     }
 
-                    LookAtTarget(targetShip.transform);
+                    // Play with turn speed for fights
+                    SeekTarget(targetShip.transform);
 
-                    if (timer >= 2)
+                    if (timer >= chosenShootSpeed)
                     {
                         Shoot();
                         timer = 0;
+                        // Reassign shoot speed
+                        chosenShootSpeed = Random.Range(minShootSpeed, maxShootSpeed);
                     }
                     break;
 

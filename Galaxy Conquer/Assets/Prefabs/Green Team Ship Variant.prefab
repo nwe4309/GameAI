@@ -45,11 +45,15 @@ MonoBehaviour:
   health: 5
   speed: 30
   rotationSpeed: 100
+  minShootSpeed: 1
+  maxShootSpeed: 4
+  chosenShootSpeed: 0
   laserShot: {fileID: 5073869425760961259, guid: 7868d254ff973934c898b3bbdad188ee, type: 3}
   nearbyNodes: []
   closestNode: {fileID: 0}
   targetNode: {fileID: 0}
   currentState: 0
+  targetShip: {fileID: 0}
 --- !u!195 &1427630117375637017
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -63,7 +67,7 @@ NavMeshAgent:
   m_Speed: 30
   m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 100
+  m_AngularSpeed: 200
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0

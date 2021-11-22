@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2059378911877226011}
   m_Layer: 0
   m_Name: Node
-  m_TagString: Untagged
+  m_TagString: Node
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,6 +112,8 @@ MonoBehaviour:
   currentOwner: 0
   captureProgress: 0
   captureThreshold: 30
+  shipsNearby: []
+  canCapture: 0
 --- !u!54 &2059378911877226011
 Rigidbody:
   m_ObjectHideFlags: 0

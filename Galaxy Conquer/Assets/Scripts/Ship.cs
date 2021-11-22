@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Galaxy
 {
@@ -25,12 +26,17 @@ namespace Galaxy
 
         [SerializeField] public Enums.ShipState currentState;
 
+        private NavMeshAgent navMeshAgent;
+
         // Start is called before the first frame update
         void Start()
         {
             currentState = Enums.ShipState.Idle;
             nodeDetector = transform.GetChild(1).gameObject;
             startingDetectorRadius = nodeDetector.GetComponent<SphereCollider>().radius;
+
+            navMeshAgent = GetComponent<NavMeshAgent>();
+            navMeshAgent.baseOffset = 0;
         }
 
         // Update is called once per frame
@@ -86,8 +92,10 @@ namespace Galaxy
                     }
                     else
                     {
+                        Vector2 targetNodePostion = new Vector2(targetNode.transform.position.x - targetNode.transform.localScale.x/2, targetNode.transform.position.z - targetNode.transform.localScale.z/2);
+                        targetNode.GetComponent<Renderer>().bounds.ClosestPoint(transform.position);
                         // If not close to the target node
-                        if(Vector3.Distance(transform.position,targetNode.transform.position) >= 10)
+                        if (Vector3.Distance(transform.position, targetNode.GetComponent<Renderer>().bounds.ClosestPoint(transform.position)) >= 30)
                         {
                             // Seek it
                             SeekTarget(targetNode.transform);
@@ -134,10 +142,12 @@ namespace Galaxy
 
         private void SeekTarget(Transform target)
         {
-            Vector3 direction = target.position - transform.position;
+            //Vector3 direction = target.position - transform.position;
+            //
+            //transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
 
-            transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), rotationSpeed * Time.deltaTime);
+            navMeshAgent.destination = target.position;
         }
 
         public void Shoot()
@@ -178,6 +188,7 @@ namespace Galaxy
                 if (node.GetComponent<NodeTerritory>().currentOwner == Enums.Team.Neutral && node.GetComponent<NodeTerritory>().CaptureProgress == 0)
                     neutralNoProgCounter++;
             }
+            // If all are neutral with no progress, pick a random one
             if(neutralNoProgCounter == nearbyNodes.Count)
             {
                 targetNode = nearbyNodes[Random.Range(0, nearbyNodes.Count)];
@@ -208,6 +219,22 @@ namespace Galaxy
                 }
 
                 targetNode = closestNodeWithProg;
+                return;
+            }
+            #endregion
+
+            // Check if all the nodes are on the same team as this ship
+            #region All on current team
+            int currentTeamCounter = 0;
+            foreach (GameObject node in nearbyNodes)
+            {
+                if (node.GetComponent<NodeTerritory>().currentOwner == currentTeam)
+                    currentTeamCounter++;
+            }
+            // If all on the same team, pick a random node
+            if(currentTeamCounter == nearbyNodes.Count)
+            {
+                targetNode = nearbyNodes[Random.Range(0, nearbyNodes.Count)];
                 return;
             }
             #endregion

@@ -186,7 +186,7 @@ namespace Galaxy
 
         private void DetectNodes()
         {
-            nodeDetector.GetComponent<SphereCollider>().radius++;
+            nodeDetector.GetComponent<SphereCollider>().radius += 100 * Time.deltaTime;
         }
 
         private void FindClosestNode(List<GameObject> nodeList)

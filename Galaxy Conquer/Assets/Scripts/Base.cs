@@ -11,7 +11,8 @@ namespace Galaxy
         [SerializeField] private GameObject orangeShip;
         [SerializeField] private GameObject greenShip;
 
-        [SerializeField] private float minSpawnTime, maxSpawnTime;
+        [SerializeField] public float minSpawnTime, maxSpawnTime;
+        public float originalMinSpawnTime, originalMaxSpawnTime;
 
         [SerializeField] private float currentSpawnTime;
         private float timer;
@@ -21,6 +22,8 @@ namespace Galaxy
         {
             base.Start();
             currentSpawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+            originalMinSpawnTime = minSpawnTime;
+            originalMaxSpawnTime = maxSpawnTime;
         }
 
         // Update is called once per frame

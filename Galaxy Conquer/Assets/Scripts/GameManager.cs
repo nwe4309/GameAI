@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Galaxy
 {
@@ -15,13 +16,28 @@ namespace Galaxy
         public Material greenTeam;
         public Material neutral;
 
-        public List<GameObject> nodesOnField;
+        public GameObject[] nodesOnField;
+        public List<GameObject> basesCaptured;
+
+        private int redTeamPoints;
+        private int blueTeamPoints;
+        private int orangeTeamPoints;
+        private int greenTeamPoints;
+
+        [SerializeField] Text redPointsText;
+        [SerializeField] Text bluePointsText;
+        [SerializeField] Text orangePointsText;
+        [SerializeField] Text greenPointsText;
+
+        [SerializeField] private float numOfNodesModifier;
 
 
         // Start is called before the first frame update
         void Start()
         {
             //SpawnNodes(-400, -400, 800, 800, 50, 150);
+            nodesOnField = GameObject.FindGameObjectsWithTag("Node");
+            basesCaptured = new List<GameObject>();
         }
 
         // Update is called once per frame
@@ -31,7 +47,7 @@ namespace Galaxy
 
             if(Input.GetKeyDown(KeyCode.Alpha1))
             {
-                Time.timeScale = 10.0f;
+                Time.timeScale = 1.0f;
                 Debug.Log("1x Speed");
             }
             else if(Input.GetKeyDown(KeyCode.Alpha2))
@@ -43,6 +59,80 @@ namespace Galaxy
             {
                 Time.timeScale = 4.0f;
                 Debug.Log("4x Speed");
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                Time.timeScale = 10.0f;
+                Debug.Log("10x Speed");
+            }
+
+            redTeamPoints = 0;
+            blueTeamPoints = 0;
+            orangeTeamPoints = 0;
+            greenTeamPoints = 0;
+            basesCaptured.Clear();
+            foreach(GameObject node in nodesOnField)
+            {
+                switch (node.GetComponent<NodeTerritory>().currentOwner)
+                {
+                    case Enums.Team.Red:
+                        redTeamPoints++;
+                        if(node.GetComponent<Base>() != null)
+                        {
+                            basesCaptured.Add(node);
+                        }
+                        break;
+                    case Enums.Team.Blue:
+                        blueTeamPoints++;
+                        if (node.GetComponent<Base>() != null)
+                        {
+                            basesCaptured.Add(node);
+                        }
+                        break;
+                    case Enums.Team.Orange:
+                        orangeTeamPoints++;
+                        if (node.GetComponent<Base>() != null)
+                        {
+                            basesCaptured.Add(node);
+                        }
+                        break;
+                    case Enums.Team.Green:
+                        greenTeamPoints++;
+                        if (node.GetComponent<Base>() != null)
+                        {
+                            basesCaptured.Add(node);
+                        }
+                        break;
+                }
+            }
+
+            redPointsText.text = "Red Team Points: " + redTeamPoints;
+            bluePointsText.text = "Blue Team Points: " + blueTeamPoints;
+            orangePointsText.text = "Orange Team Points: " + orangeTeamPoints;
+            greenPointsText.text = "Green Team Points: " + greenTeamPoints;
+
+            foreach(GameObject nodeBase in basesCaptured)
+            {
+                Base baseScript = nodeBase.GetComponent<Base>();
+                switch (baseScript.currentOwner)
+                {
+                    case Enums.Team.Red:
+                        baseScript.minSpawnTime = baseScript.originalMinSpawnTime - redTeamPoints * numOfNodesModifier;
+                        baseScript.maxSpawnTime = baseScript.originalMaxSpawnTime - redTeamPoints * numOfNodesModifier;
+                        break;
+                    case Enums.Team.Blue:
+                        baseScript.minSpawnTime = baseScript.originalMinSpawnTime - blueTeamPoints * numOfNodesModifier;
+                        baseScript.maxSpawnTime = baseScript.originalMaxSpawnTime - blueTeamPoints * numOfNodesModifier;
+                        break;
+                    case Enums.Team.Orange:
+                        baseScript.minSpawnTime = baseScript.originalMinSpawnTime - orangeTeamPoints * numOfNodesModifier;
+                        baseScript.maxSpawnTime = baseScript.originalMaxSpawnTime - orangeTeamPoints * numOfNodesModifier;
+                        break;
+                    case Enums.Team.Green:
+                        baseScript.minSpawnTime = baseScript.originalMinSpawnTime - greenTeamPoints * numOfNodesModifier;
+                        baseScript.maxSpawnTime = baseScript.originalMaxSpawnTime - greenTeamPoints * numOfNodesModifier;
+                        break;
+                }
             }
         }
 

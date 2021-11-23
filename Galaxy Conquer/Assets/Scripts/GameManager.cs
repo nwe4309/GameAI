@@ -29,6 +29,8 @@ namespace Galaxy
         [SerializeField] Text orangePointsText;
         [SerializeField] Text greenPointsText;
 
+        [SerializeField] Text gameSpeed;
+
         [SerializeField] private float numOfNodesModifier;
 
 
@@ -48,22 +50,22 @@ namespace Galaxy
             if(Input.GetKeyDown(KeyCode.Alpha1))
             {
                 Time.timeScale = 1.0f;
-                Debug.Log("1x Speed");
+                gameSpeed.text = "Current Game Speed: 1x";
             }
             else if(Input.GetKeyDown(KeyCode.Alpha2))
             {
                 Time.timeScale = 2.0f;
-                Debug.Log("2x Speed");
+                gameSpeed.text = "Current Game Speed: 2x";
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 Time.timeScale = 4.0f;
-                Debug.Log("4x Speed");
+                gameSpeed.text = "Current Game Speed: 4x";
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 Time.timeScale = 10.0f;
-                Debug.Log("10x Speed");
+                gameSpeed.text = "Current Game Speed: 10x";
             }
 
             redTeamPoints = 0;

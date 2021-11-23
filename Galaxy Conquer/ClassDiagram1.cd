@@ -59,7 +59,7 @@
   <Class Name="Galaxy.Base">
     <Position X="0.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAACAAAAARAAAAgAEAAAAAAgAAAAAAIAAAAIA=</HashCode>
+      <HashCode>AAQAAAAAACAAAAARAEAAgAEAAAABAgAAAAAAIAAAAIA=</HashCode>
       <FileName>Assets\Scripts\Base.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -73,7 +73,7 @@
   <Class Name="Galaxy.GameManager">
     <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABQABAAAACDAAAAAAAAAAQAgCAAAIAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>IRQABAAAACDQBAAAAAwAAWAgAAAAIACAABAAAAEgAEA=</HashCode>
       <FileName>Assets\Scripts\GameManager.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -94,19 +94,19 @@
   <Class Name="Galaxy.Ship">
     <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQgAAAAAKAABAAgIAAAQUAAAAAIBQAAQABDAAAAAAw=</HashCode>
+      <HashCode>AAQiAEAAAKAABAAgIAAAQUAAABAIBQAAQABDAQBCAEw=</HashCode>
       <FileName>Assets\Scripts\Ship.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="Galaxy.Enums.Team">
-    <Position X="4.25" Y="6" Width="1.5" />
+    <Position X="4.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAhAAAAAAAAAAAAAAIAAAAAAAABAAAAA=</HashCode>
       <FileName>Assets\Scripts\GalaxyEnums.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="Galaxy.Enums.ShipState">
-    <Position X="2.5" Y="6" Width="1.5" />
+    <Position X="2.5" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAIAIIAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
       <FileName>Assets\Scripts\GalaxyEnums.cs</FileName>
